@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Priyanka's Awesome Life</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+            overflow: hidden;
+            color: white;
+        }
+        .intro {
+            padding: 20px;
+            text-align: center;
+            font-size: 1.2em;
+            z-index: 2;
+            position: relative;
+        }
+        canvas {
+            display: block;
+        }
+        .info-box {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            display: none;
+        }
+        audio {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="intro">
+        <h1>Welcome to Priyanka's Awesome Life 🌟</h1>
+        <p>Hi! I'm Priyanka — an 8th grader, future astronaut 🚀, robotics lover 🤖, and black belt champ 🥋.</p>
+    </div>
+
+    <div id="infoBox" class="info-box"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three-globe"></script>
+    <script>
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        const Globe = new ThreeGlobe()
+            .globeImageUrl('//unpkg.com/three-globe/example/img/earth-dark.jpg')
+            .pointsData([
+                { lat: 29.7604, lng: -95.3698, label: "Got my black belt 🥋" },
+                { lat: 28.5383, lng: -81.3792, label: "Built my first robot 🤖" }
+            ])
+            .pointAltitude(0.05)
+            .pointColor(() => 'magenta')
+            .pointLabel(d => d.label);
+
+        scene.add(Globe);
+        camera.position.z = 300;
+
+        const ambientLight = new THREE.AmbientLight(0xbbbbbb);
+        scene.add(ambientLight);
+
+        function animate() {
+            requestAnimationFrame(animate);
+            Globe.rotation.y += 0.002;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Tooltip functionality
+        const infoBox = document.getElementById("infoBox");
+        window.addEventListener("click", (event) => {
+            const label = document.querySelector(':hover')?.getAttribute('data-label');
+            if (label) {
+                infoBox.textContent = label;
+                infoBox.style.display = "block";
+                setTimeout(() => { infoBox.style.display = "none"; }, 3000);
+            }
+        });
+    </script>
+
+    <audio autoplay loop>
+        <source src="lofi.mp3" type="audio/mpeg">
+    </audio>
+</body>
+</html>
