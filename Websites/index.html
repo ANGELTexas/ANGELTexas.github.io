@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Priyanka's Personal Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Knewave&display=swap" rel="stylesheet">
+    <style>
+        /* Define CSS Variables for Dark Mode (Default) */
+        :root {
+            --bg-body: #1A1A1A;
+            --text-body: #E0E0E0;
+            --bg-navbar: #2C2C2C;
+            --text-navbar: #FFFFFF;
+            --navbar-hover-bg: #404040;
+            --bg-section-main: #282828;
+            --bg-section-alt: #222222;
+            --shadow-section: rgba(0,0,0,0.3); /* Lighter shadow */
+            --shadow-section-hover: rgba(0,0,0,0.5); /* For list item hover */
+            --h1-color: #FFFFFF;
+            --h2-color: #E8E8E8;
+            --h2-border: #444444; /* Not used right now, but good to have */
+            --bg-list-item: #3A3A3A;
+            --text-list-item: #E0E0E0;
+            --accent-color: #99CCFF; /* Soft light blue accent */
+            --shadow-pic: rgba(0,0,0,0.3); /* Lighter shadow for pic */
+            --contact-info-color: #E0E0E0;
+            --button-bg: #404040;
+            --button-text: #FFFFFF;
+            --button-hover-bg: #555555;
+        }
+
+        /* Override CSS Variables for Light Mode */
+        body.light-mode {
+            --bg-body: #FFF8F5;
+            --text-body: #333333;
+            --bg-navbar: #FFDCDC;
+            --text-navbar: #402020;
+            --navbar-hover-bg: #FFC2C2;
+            --bg-section-main: #FFFFFF;
+            --bg-section-alt: #FDFBF8;
+            --shadow-section: rgba(0,0,0,0.08); /* Lighter shadow */
+            --shadow-section-hover: rgba(0,0,0,0.12); /* For list item hover */
+            --h1-color: #402040;
+            --h2-color: #503030;
+            --h2-border: #FFEAE5; /* Not used right now, but good to have */
+            --bg-list-item: #FFEFF5;
+            --text-list-item: #333333;
+            /* --accent-color remains the same as #99CCFF for both themes */
+            --shadow-pic: rgba(0,0,0,0.08); /* Lighter shadow for pic */
+            --contact-info-color: #555;
+            --button-bg: #E0E0E0;
+            --button-text: #333333;
+            --button-hover-bg: #CCCCCC;
+        }
+
+        body {
+            font-family: 'Knewave', system-ui; /* Knewave for ALL text */
+            letter-spacing: 0.05em; /* Added letter spacing for readability */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: var(--bg-body); /* Use variable */
+            color: var(--text-body); /* Use variable */
+            padding-top: 60px;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+        }
+
+        /* Styles for the Navigation Bar */
+        .navbar {
+            width: 100%;
+            background-color: var(--bg-navbar); /* Use variable */
+            padding: 10px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px var(--shadow-section); /* Use variable */
+            text-align: center;
+            display: flex; /* Use flexbox for navbar items */
+            justify-content: center; /* Center items */
+            align-items: center; /* Align items vertically */
+        }
+        .navbar .nav-link { /* Targeting links with class .nav-link now */
+            color: var(--text-navbar); /* Use variable */
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            font-weight: bold;
+            font-size: 0.95em;
+            cursor: pointer; /* Indicate clickability */
+        }
+        .navbar .nav-link:hover {
+            background-color: var(--navbar-hover-bg); /* Use variable */
+        }
+        /* Style for the active navigation link */
+        .navbar .nav-link.active {
+            background-color: var(--accent-color); /* Highlight active link with accent color */
+            color: var(--button-text); /* Ensure text is readable on accent color */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .navbar .nav-link.active:hover {
+            background-color: var(--accent-color); /* Keep active color on hover */
+        }
+
+        #theme-toggle {
+            background-color: var(--button-bg);
+            color: var(--button-text);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2em;
+            margin-left: 15px; /* Space from other nav items */
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        #theme-toggle:hover {
+            background-color: var(--button-hover-bg);
+        }
+
+        /* Section visibility control */
+        .section-container {
+            display: none; /* Hide all sections by default */
+            background-color: var(--bg-section-main); /* Use variable */
+            padding: 40px 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px var(--shadow-section); /* Softer, wider shadow */
+            max-width: 700px;
+            width: 100%;
+            margin-bottom: 30px;
+            text-align: center;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+        }
+        .section-container.active {
+            display: block; /* Show the active section */
+        }
+        
+        /* Alternating background for sections (will only apply if multiple active sections were possible,
+           but good to keep for consistency if structure changes later) */
+        .section-container:nth-of-type(odd) {
+            background-color: var(--bg-section-alt); /* Use variable */
+        }
+        .section-container:nth-of-type(even) {
+            background-color: var(--bg-section-main); /* Use variable */
+        }
+
+
+        h1 {
+            /* Knewave is inherited from body, so no specific font-family needed here */
+            color: var(--h1-color); /* Use variable */
+            margin-bottom: 10px;
+            transition: color 0.3s ease; /* Smooth transition */
+        }
+        h2 {
+            /* Knewave is inherited from body, so no specific font-family needed here */
+            color: var(--h2-color); /* Use variable */
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            display: inline-block;
+            transition: color 0.3s ease; /* Smooth transition */
+        }
+        p {
+            line-height: 1.6; /* Good readability, though Knewave's nature might still make it challenging */
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+            margin: 0 auto;
+            max-width: 90%;
+        }
+        li {
+            background-color: var(--bg-list-item); /* Use variable */
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03); /* Subtle initial shadow */
+            font-size: 1.1em;
+            color: var(--text-list-item); /* Use variable */
+            line-height: 1.5; /* Good readability for list items, with Knewave */
+            cursor: default; /* Indicate not clickable */
+            transition: box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+        }
+        li:hover {
+            box-shadow: 0 8px 15px var(--shadow-section-hover); /* More pronounced, but softer shadow on hover */
+        }
+        li strong {
+            color: var(--accent-color); /* Use variable */
+        }
+
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 25px;
+            border: 3px solid var(--accent-color); /* Use variable */
+            box-shadow: 0 5px 15px var(--shadow-pic); /* Softer, wider shadow */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+        }
+        .contact-info {
+            margin-top: 25px;
+            font-size: 0.95em;
+            color: var(--contact-info-color); /* Use variable */
+            text-align: center;
+            transition: color 0.3s ease; /* Smooth transition */
+        }
+        .contact-info a {
+            color: var(--accent-color); /* Use variable */
+            text-decoration: none;
+        }
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a class="nav-link active" data-section="about-me">About Me</a>
+        <a class="nav-link" data-section="academics">Academics</a>
+        <a class="nav-link" data-section="robotics">Robotics</a>
+        <a class="nav-link" data-section="swimming">Swimming</a>
+        <a class="nav-link" data-section="karate">Karate</a>
+        <a class="nav-link" data-section="choir">Choir</a>
+        <a class="nav-link" data-section="art">Art</a>
+        <button id="theme-toggle" aria-label="Toggle light and dark mode">🌙</button>
+    </div>
+
+    <div class="section-container active" id="about-me">
+        <h1>Priyanka</h1>
+        <img src="profile.jpg" alt="Priyanka's Profile Picture" class="profile-pic">
+        
+        <p>Priyanka is a motivated and creative 8th grade student with strong interests in science, robotics, and engineering. She participates in her school’s robotics club and aspires to become an astronaut.</p>
+        
+        <div class="contact-info">
+            <p>Email: <a href="mailto:angel.chawla2012@gmail.com">angel.chawla2012@gmail.com</a></p>
+            <p>Phone: <a href="tel:+12819617585">+1 281-961-7585</a></p>
+        </div>
+    </div>
+
+    <div class="section-container" id="academics">
+        <h2>Academics</h2>
+        <p>Here you can write about your favorite subjects, any academic achievements (like honor roll or specific awards), or projects you've done in school.</p>
+        <ul>
+            <li><strong>Favorite Subjects:</strong> Math, Science</li>
+            <li><strong>Achievements:</strong> A/B Honor Roll (7th grade), A Honor Roll (6th grade), A/B Honor Roll (6th grade), ELA Outstanding Viking Award (6th grade)</li>
+            <li><strong>Current Classes:</strong> ELA ACC, Science AAC, Algebra 1 AAC, US History AAC, Fundumentals of Computer Science, Spanish 1</li>
+        </ul>
+    </div>
+
+    <div class="section-container" id="robotics">
+        <h2>Robotics</h2>
+        <p>Describe your involvement in the robotics club here! What kinds of robots have you built or worked on? What challenges have you overcome? What was your role in the team?</p>
+        <ul>
+            <li><strong>Club Role:</strong> Programmer</li>
+            <li><strong>Key Projects:</strong> Fort Bend ISD distric wide robotics competition</li>
+            <li><strong>Skills Used:</strong> Block Code (soon python)</li>
+        </ul>
+    </div>
+
+    <div class="section-container" id="swimming">
+        <h2>Swimming</h2>
+        <p>Tell us about your swimming activities. Are you on a team? What strokes do you enjoy? Any achievements or personal bests you're proud of?</p>
+        <ul>
+            <li><strong>Participation:</strong> Local YMCA Club</li>
+            <li><strong>Favorite Strokes:</strong> Freestyle and Backstroke</li>
+            <li><strong>Achievements:</strong> 3rd place in local competition</li>
+        </ul>
+    </div>
+
+    <div class="section-container" id="karate">
+        <h2>Karate</h2>
+        <p>Share details about your karate practice. What belt rank are you? What do you enjoy most about it? Any competitions or demonstrations you've been part of?</p>
+        <ul>
+            <li><strong>Belt Rank:</strong> Probationary Black Belt</li>
+            <li><strong>Years Practicing:</strong> 3.5 years</li>
+            <li><strong>Highlights:</strong> (e.g., Competed in XYZ tournament, learned a new kata)</li>
+        </ul>
+    </div>
+
+    <div class="section-container" id="choir">
+        <h2>Choir</h2>
+        <p>Describe your experience in choir. What kind of music do you sing? Have you performed anywhere? What do you enjoy about being part of a choir?</p>
+        <ul>
+            <li><strong>Type of Choir:</strong> School Choir</li>
+            <li><strong>Role:</strong> Soprano 1/2</li>
+            <li><strong>Performances:</strong> Seasonal Concerts, Winter tour, and (Sugar Land, Texas) Tree Lighting Ceremony</li>
+        </ul>
+    </div>
+
+    <div class="section-container" id="art">
+        <h2>Art</h2>
+        <p>Tell us about your artistic endeavors! What kind of art do you create (drawing, painting, digital art, crafts)? What inspires you? Do you have a favorite medium?</p>
+        <ul>
+            <li><strong>Mediums:</strong> Color Pencil and Pencil Shading</li>
+            <li><strong>Favorite Styles/Subjects:</strong> (e.g., landscapes, portraits, abstract)</li>
+            <li><strong>Creations:</strong> (e.g., "My painting of the galaxy," "Sketches from my notebook")</li>
+        </ul>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeToggle = document.getElementById('theme-toggle');
+            const body = document.body;
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.section-container');
+
+            // --- Theme Toggle Logic ---
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            // Set initial theme based on saved preference or system preference
+            if (savedTheme) {
+                body.classList.add(savedTheme);
+                if (savedTheme === 'light-mode') {
+                    themeToggle.textContent = '☀️'; // Sun icon for light mode
+                } else {
+                    themeToggle.textContent = '🌙'; // Moon icon for dark mode
+                }
+            } else if (prefersDark) {
+                body.classList.add('dark-mode');
+                themeToggle.textContent = '🌙'; // Moon icon for dark mode
+            } else {
+                body.classList.add('light-mode'); // Fallback to light mode if nothing else
+                themeToggle.textContent = '☀️'; // Sun icon for light mode
+            }
+
+            // Event listener for the theme toggle button
+            themeToggle.addEventListener('click', () => {
+                if (body.classList.contains('dark-mode')) {
+                    body.classList.remove('dark-mode');
+                    body.classList.add('light-mode');
+                    localStorage.setItem('theme', 'light-mode');
+                    themeToggle.textContent = '☀️'; // Change to sun
+                } else {
+                    body.classList.remove('light-mode');
+                    body.classList.add('dark-mode');
+                    localStorage.setItem('theme', 'dark-mode');
+                    themeToggle.textContent = '🌙'; // Change to moon
+                }
+            });
+
+            // --- Section Switching Logic ---
+            // Function to show a specific section and activate its nav link
+            function showSection(sectionId) {
+                // Hide all sections
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                // Deactivate all nav links
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                });
+
+                // Show the target section
+                const targetSection = document.getElementById(sectionId);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                    // Smoothly scroll to the top of the currently visible content, accounting for fixed navbar
+                    window.scrollTo({
+                        top: 0, // Scroll to top of the window
+                        behavior: 'smooth'
+                    });
+                }
+
+                // Activate the corresponding nav link
+                const targetNavLink = document.querySelector(`.nav-link[data-section="${sectionId}"]`);
+                if (targetNavLink) {
+                    targetNavLink.classList.add('active');
+                }
+            }
+
+            // Add click listeners to navigation links
+            navLinks.forEach(link => {
+                link.addEventListener('click', (event) => {
+                    event.preventDefault(); // Prevent default link behavior (like jumping/scrolling directly)
+                    const sectionId = event.target.dataset.section;
+                    showSection(sectionId);
+                });
+            });
+
+            // Show the "About Me" section by default when the page loads
+            showSection('about-me'); 
+        });
+    </script>
+</body>
+</html>
